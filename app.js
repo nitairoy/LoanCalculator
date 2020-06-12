@@ -4,7 +4,7 @@ document.getElementById("loan-form").addEventListener("submit", function (e) {
 
   document.querySelector("#results").style.display = "none";
 
-  setTimeout(calResults, 1000);
+  setTimeout(calResults, 2000);
 
   e.preventDefault();
 });
@@ -62,7 +62,7 @@ function showError(error) {
 
   card.insertBefore(errorDiv, heading);
 
-  setTimeout(errorMessage, 1000);
+  setTimeout(errorMessage, 2000);
   document.querySelector("#loading").style.display = "none";
 }
 
