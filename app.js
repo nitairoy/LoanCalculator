@@ -1,83 +1,72 @@
-// listen submit
-document.getElementById('loan-form').addEventListener('submit', function(e){
-    // hide results
-    document.getElementById('results').style.display = 'none';
-    
-    // show loader
-    document.getElementById('loading').style.display = 'block';
+// get ui var
+document.getElementById("loan-form").addEventListener("submit", function (e) {
+  document.querySelector("#loading").style.display = "block";
 
+  document.querySelector("#results").style.display = "none";
 
-    setTimeout(calculateResults, 1000);
+  setTimeout(calResults, 1000);
 
-    e.preventDefault()
+  e.preventDefault();
 });
 
-function calculateResults(){
-    // console.log('testing')
-// UI variables
-const amount = document.getElementById('amount');
-const interest = document.getElementById('interest');
-const years = document.getElementById('years');
+// Function to calculate
+function calResults() {
+  // get UI variables
+  const amount = document.getElementById("amount");
+  const interest = document.getElementById("interest");
+  const years = document.getElementById("year");
 
-const monthlyPayment = document.getElementById('monthly-payment');
-const totalPayment = document.getElementById('total-payment');
-const totalInterest = document.getElementById('total-interest');
+  const monthlyPay = document.getElementById("monthly");
+  const totalAmount = document.getElementById("total-amount");
+  const totalInterest = document.getElementById("total-interest");
 
-const princial = parseFloat(amount.value);
-const calculatedInterest = parseFloat(interest.value) / 100 / 12;
-const calculatedPayments = parseFloat(years.value) * 12;
+  // calculate interest
+  const principal = parseFloat(amount.value);
+  const calculatedInterested = parseFloat(interest.value) / 100 / 12;
+  const totalPayment = parseFloat(years.value) * 12;
 
-// Compute monthly payment
-const x = Math.pow( 1 + calculatedInterest, calculatedPayments);
-const monthly = (princial * x * calculatedInterest) / (x-1);
+  // calculate monthly
+  const x = Math.pow(1 + calculatedInterested, totalPayment);
+  const monthly = (principal * x * calculatedInterested) / (x - 1);
 
-if(isFinite(monthly)){
-    monthlyPayment.value = monthly.toFixed(2);
-    totalPayment.value = (monthly * calculatedPayments).toFixed(2);
-    totalInterest.value = ((monthly * calculatedPayments) - princial).toFixed(2);
+  if (isFinite(monthly)) {
+    monthlyPay.value = monthly.toFixed(2);
+    totalAmount.value = (monthly * totalPayment).toFixed(2);
+    totalInterest.value = (monthly * totalPayment - principal).toFixed(2);
 
-    //show results
-    document.getElementById('results').style.display = 'block';
+    document.querySelector("#loading").style.display = "none";
+    document.querySelector("#results").style.display = "block";
+  } else {
+    showError("Please provide numbers...");
+  }
 
-    // hide loader
-    document.getElementById('loading').style.display = 'none';
-
-}else{
-    showError('Please check your numbers');
+  //   e.preventDefault();
 }
 
-   
+// show error message
+function showError(error) {
+  document.querySelector("#loading").style.display = "block";
+  // create elements to show the message
+  const errorDiv = document.createElement("div");
+  // give class name based on bootstrap alert message
+  errorDiv.className = "alert alert-danger";
+  // create Text node and append to div
+  errorDiv.appendChild(document.createTextNode(error));
+  // append div to card
+
+  const card = document.querySelector(".card-body");
+
+  const heading = document.querySelector(".heading");
+
+  card.appendChild(errorDiv);
+
+  card.insertBefore(errorDiv, heading);
+
+  setTimeout(errorMessage, 1000);
+  document.querySelector("#loading").style.display = "none";
 }
 
-function showError(error){
-    // hide results
-    document.getElementById('results').style.display = 'none';
-    
-    // hide loader
-    document.getElementById('loading').style.display = 'none';
-
-//create a div
-const errorDiv = document.createElement('div');
-
-// get elements
-const card = document.querySelector('.card')
-const heading = document.querySelector('.heading')
-
-// add class
-errorDiv.className = 'alert alert-danger';
-
-//create text node and append to div
-errorDiv.appendChild(document.createTextNode(error));
-
-// insert error above eading
-card.insertBefore(errorDiv, heading);
-
-//clear error after 3 seconds
-setTimeout(clearError, 3000);
-}
-
-// clear error
-
-function clearError(){
-    document.querySelector('.alert').remove();
+// remove error message
+function errorMessage() {
+  document.querySelector(".alert").remove();
 }
